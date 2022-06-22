@@ -80,5 +80,9 @@ folder.8.1
 for a in soup.select('div a[href]'):
     print (a.text)
 '''
+count = 0
 for i in zip(soup.find_all('div', id=True), soup.select('div a[href]')):
+    count += 1
     print(i[0].get('id'), i[1].text)
+print("total html:" + str(count))
+# 主要 html 只有 57 個
