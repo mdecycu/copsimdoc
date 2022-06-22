@@ -1,0 +1,333 @@
+Main features
+
+Version history
+
+Licensing
+
+Acknowledgments and credits
+
+Overview in other languages
+
+User interface
+
+Pages and views
+
+Position/orientation manipulation
+
+Position dialog
+
+Orientation dialog
+
+Object movement via the mouse
+
+On positions, orientations and transformations
+
+User settings
+
+Shortcuts
+
+Scenes and models
+
+Scenes
+
+Models
+
+Model dialog
+
+Environment
+
+Environment dialog
+
+Texture dialog
+
+Entities
+
+Collections
+
+Scene objects
+
+Object properties
+
+Object common properties
+
+Collidable objects
+
+Measurable objects
+
+Detectable objects
+
+Viewable objects
+
+Convex hull
+
+Layer selection dialog
+
+Cameras
+
+Camera properties
+
+Lights
+
+Light properties
+
+Shapes
+
+Shape coordinate frame
+
+Primitive shapes
+
+Convex decomposition
+
+Shape properties
+
+Shape edit modes
+
+Joints
+
+Joint modes
+
+Joint properties
+
+Dummies
+
+Dummy properties
+
+Graphs
+
+Graph properties
+
+Proximity sensors
+
+Proximity sensor types and mode of operation
+
+Proximity sensor properties
+
+Proximity sensor volume dialog
+
+Proximity sensor detection parameter dialog
+
+Vision sensors
+
+Vision sensor types and mode of operation
+
+Vision sensor properties
+
+Force sensors
+
+Force sensor property
+
+OC trees
+
+OC tree properties
+
+Point clouds
+
+Point cloud properties
+
+Paths
+
+Functionality
+
+Geometric calculations
+
+Collision detection
+
+Distance calculation
+
+Geometric plugin
+
+simGeom API reference
+
+Coppelia geometric routines
+
+API reference
+
+simIGL API reference
+
+Kinematics
+
+Basics on IK groups and IK elements
+
+Solving IK and FK for any type of mechanism
+
+Kinematics plugin
+
+simIK API reference
+
+Coppelia kinematics routines
+
+API reference
+
+Dynamics
+
+Designing dynamic simulations
+
+General dynamics properties
+
+Dynamics engines general properties
+
+Data visualization/output
+
+Web-browser based front-end
+
+Data manipulation/transformation
+
+Messaging/interfaces/connectivity
+
+Remote API
+
+ZeroMQ remote API
+
+WebSocket remote API
+
+ROS Interfaces
+
+ROS Interface
+
+simROS API reference
+
+ROS 2 Interface
+
+simROS2 API reference
+
+simZMQ API reference
+
+simWS API reference
+
+Paths/trajectories
+
+Path planning
+
+simOMPL API reference
+
+Synthetic vision
+
+simIM API reference
+
+simVision API reference
+
+Custom user interfaces
+
+simUI API reference
+
+simUI XML syntax
+
+simQML API reference
+
+Import/export
+
+XML format
+
+URDF format
+
+simURDF API reference
+
+SDF format
+
+simSDF API reference
+
+Video exporter
+
+simAssimp API reference
+
+simGLTF API reference
+
+Commands/setting
+
+simLuaCmd API reference
+
+Miscellaneous
+
+simSurfRec API reference
+
+simICP API reference
+
+simSubprocess API reference
+
+Writing code in and around CoppeliaSim
+
+Scripts
+
+Embedded scripts
+
+Simulation scripts
+
+The main script
+
+Child scripts
+
+Customization scripts
+
+Script dialog
+
+Script editor
+
+Add-ons
+
+The sandbox script
+
+Script execution order
+
+Threaded and non-threaded script code
+
+Callback functions
+
+Dynamics callback functions
+
+Joint callback functions
+
+Contact callback function
+
+Vision callback functions
+
+Trigger callback functions
+
+User config callback functions
+
+Lua vs Python scripts
+
+Lua crash course
+
+Plugins
+
+The main client application
+
+Accessing scene objects programmatically
+
+Explicit and non-explicit calls
+
+CoppeliaSim API framework
+
+Regular API reference
+
+Regular API constants
+
+Object parameter IDs
+
+Simulation
+
+Simulation settings dialog
+
+Tutorials
+
+BubbleRob tutorial
+
+Building a clean model tutorial
+
+Line following BubbleRob tutorial
+
+Inverse kinematics tutorial
+
+External controller tutorial
+
+Plugin tutorial
+
+Robot language interpreter integration tutorial
+
+ROS tutorials
+
+ROS tutorial
+
+ROS 2 tutorial
+
+Compiling CoppeliaSim
