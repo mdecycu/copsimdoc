@@ -27,6 +27,8 @@
 <v t="leo.20220811153642.1"><vh>modified wb_tree.html make div includes all html files</vh>
 <v t="leo.20220811153642.2"><vh>@auto C:/portable_2022_fall/tmp/mdecycu/copsimdoc/wb_tree.html</vh></v>
 </v>
+<v t="leo.20220811234602.1"><vh>wb_tree.html 處理</vh></v>
+<v t="leo.20220812002135.1"><vh>html 處理</vh></v>
 </vnodes>
 <tnodes>
 <t tx="leo.20220518161022.1"></t>
@@ -346,5 +348,8 @@ for i in title:
 </t>
 <t tx="leo.20220811153522.1">div</t>
 <t tx="leo.20220811153642.1"></t>
+<t tx="leo.20220811234602.1">除掉 &lt;img src="wb_img/node.png"&gt;
+</t>
+<t tx="leo.20220812002135.1">檢查是有 page title 中的 space 必須移除才可與原手冊的頁面連結相對應</t>
 </tnodes>
 </leo_file>
