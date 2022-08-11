@@ -1,3 +1,6 @@
+# 必須要先將原 htm 中的 h1, h2 與 h3 全部換為 h4 之後再轉檔
+# 請注意, wb_tree.html 中的特定 .htm 區段並沒有採用統一的 id 註記標號
+# 這裡可能要手動檢查與處以
 from bs4 import BeautifulSoup
 with open("wb_tree.html") as f:
     data = f.read()
@@ -80,9 +83,65 @@ folder.8.1
 for a in soup.select('div a[href]'):
     print (a.text)
 '''
+def readFile(path):
+    """Read file content by given path
+    """
+    with open(path, encoding="utf-8") as f:
+        data = f.read()
+        # h1, h2 and h3 replaced with h4
+        data = data.replace("<h1>", "<h4>")
+        data = data.replace("</h1>", "</h4>")
+        data = data.replace("<h2>", "<h4>")
+        data = data.replace("</h2>", "</h4>")
+        data = data.replace("<h3>", "<h4>")
+        data = data.replace("</h3>", "</h4>")
+    return data
+    
+def getBody(path):
+    """Get html body content by given file path
+    """
+    soup = BeautifulSoup(readFile(path), 'html.parser')
+    body = soup.find('body')
+    # get body content without body tag
+    return str(body.findChildren(recursive=False))
+    
+def pageLevel(id):
+    length = len(id)
+    if length == 8:
+        return 1
+    elif length == 10:
+        return 2
+    else:
+        return 3
+        
+def makePage(pageList):
+    body = getBody(pageList[2])
+    if pageLevel(pageList[0]) == 1:
+        content = "<h1>" + pageList[1] + "</h1>" + body[1:-1]
+    elif pageLevel(pageList[0]) == 2:
+        content = "<h2>" + pageList[1] + "</h2>" + body[1:-1]
+    else:
+        content = "<h3>" + pageList[1] + "</h3>" + body[1:-1]
+    return content
+    
 count = 0
+page_info = []
 for i in zip(soup.find_all('div', id=True), soup.select('div a[href]')):
     count += 1
-    print(i[0].get('id'), i[1].text)
-print("total html:" + str(count))
+    # folder, page_title, page_location
+    #print(i[0].get('id'), i[1].text, i[1]['href'])
+    page_info.append([i[0].get('id'), i[1].text, i[1]['href']])
+#print("total html:" + str(count))
+#print(page_info)
 # 主要 html 只有 57 個
+#first = ['folder.1', 'CoppeliaSim User Manual', 'en/welcome.htm']
+#print(readFile(first[2]))
+#print(getBody(first[2]))
+contentHtml = ""
+for i in page_info:
+    eachPage = makePage(i)
+    contentHtml += eachPage
+print(contentHtml)
+
+
+

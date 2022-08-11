@@ -10,10 +10,10 @@
 <v t="leo.20220518161022.2"><vh>@data qt-gui-plugin-style-sheet</vh></v>
 <v t="leo.20220518161022.3"><vh>@string initial_split_orientation = horizontal</vh></v>
 <v t="leo.20220518161101.1"><vh>@@data import-xml-tags</vh></v>
+<v t="leo.20220811153522.1"><vh>@data import-html-tags</vh></v>
 </v>
 <v t="leo.20220622162834.1"><vh>About </vh></v>
-<v t="leo.20220518161142.1"><vh>recursive importer</vh></v>
-<v t="leo.20220623000948.1"><vh>imported files</vh>
+<v t="leo.20220623000948.1"><vh>Python programs</vh>
 <v t="leo.20220623000948.2"><vh>@path ./</vh>
 <v t="leo.20220623000948.3"><vh>@clean get_div.py</vh>
 <v t="leo.20220623000948.4"><vh>Declarations</vh></v>
@@ -22,6 +22,10 @@
 <v t="leo.20220623000949.2"><vh>Declarations</vh></v>
 </v>
 </v>
+</v>
+<v t="leo.20220518161142.1"><vh>recursive importer</vh></v>
+<v t="leo.20220811153642.1"><vh>modified wb_tree.html make div includes all html files</vh>
+<v t="leo.20220811153642.2"><vh>@auto C:/portable_2022_fall/tmp/mdecycu/copsimdoc/wb_tree.html</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -137,7 +141,10 @@ c.recursiveImport(
 @language python
 @tabwidth -4
 </t>
-<t tx="leo.20220623000948.4">from bs4 import BeautifulSoup
+<t tx="leo.20220623000948.4"># 必須要先將原 htm 中的 h1, h2 與 h3 全部換為 h4 之後再轉檔
+# 請注意, wb_tree.html 中的特定 .htm 區段並沒有採用統一的 id 註記標號
+# 這裡可能要手動檢查與處以
+from bs4 import BeautifulSoup
 with open("wb_tree.html") as f:
     data = f.read()
 
@@ -219,12 +226,68 @@ folder.8.1
 for a in soup.select('div a[href]'):
     print (a.text)
 '''
+def readFile(path):
+    """Read file content by given path
+    """
+    with open(path, encoding="utf-8") as f:
+        data = f.read()
+        # h1, h2 and h3 replaced with h4
+        data = data.replace("&lt;h1&gt;", "&lt;h4&gt;")
+        data = data.replace("&lt;/h1&gt;", "&lt;/h4&gt;")
+        data = data.replace("&lt;h2&gt;", "&lt;h4&gt;")
+        data = data.replace("&lt;/h2&gt;", "&lt;/h4&gt;")
+        data = data.replace("&lt;h3&gt;", "&lt;h4&gt;")
+        data = data.replace("&lt;/h3&gt;", "&lt;/h4&gt;")
+    return data
+    
+def getBody(path):
+    """Get html body content by given file path
+    """
+    soup = BeautifulSoup(readFile(path), 'html.parser')
+    body = soup.find('body')
+    # get body content without body tag
+    return str(body.findChildren(recursive=False))
+    
+def pageLevel(id):
+    length = len(id)
+    if length == 8:
+        return 1
+    elif length == 10:
+        return 2
+    else:
+        return 3
+        
+def makePage(pageList):
+    body = getBody(pageList[2])
+    if pageLevel(pageList[0]) == 1:
+        content = "&lt;h1&gt;" + pageList[1] + "&lt;/h1&gt;" + body[1:-1]
+    elif pageLevel(pageList[0]) == 2:
+        content = "&lt;h2&gt;" + pageList[1] + "&lt;/h2&gt;" + body[1:-1]
+    else:
+        content = "&lt;h3&gt;" + pageList[1] + "&lt;/h3&gt;" + body[1:-1]
+    return content
+    
 count = 0
+page_info = []
 for i in zip(soup.find_all('div', id=True), soup.select('div a[href]')):
     count += 1
-    print(i[0].get('id'), i[1].text)
-print("total html:" + str(count))
+    # folder, page_title, page_location
+    #print(i[0].get('id'), i[1].text, i[1]['href'])
+    page_info.append([i[0].get('id'), i[1].text, i[1]['href']])
+#print("total html:" + str(count))
+#print(page_info)
 # 主要 html 只有 57 個
+#first = ['folder.1', 'CoppeliaSim User Manual', 'en/welcome.htm']
+#print(readFile(first[2]))
+#print(getBody(first[2]))
+contentHtml = ""
+for i in page_info:
+    eachPage = makePage(i)
+    contentHtml += eachPage
+print(contentHtml)
+
+
+
 </t>
 <t tx="leo.20220623000949.1">@path ./
 @others
@@ -251,5 +314,7 @@ for i in title:
 '''
     
 </t>
+<t tx="leo.20220811153522.1">div</t>
+<t tx="leo.20220811153642.1"></t>
 </tnodes>
 </leo_file>
