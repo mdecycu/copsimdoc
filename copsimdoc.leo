@@ -249,35 +249,64 @@ def getBody(path):
     return str(body.findChildren(recursive=False))
     
 def pageLevel(id):
-    length = len(id)
-    if length == 8:
+    # 利用 folder 字串切割 anchor 中的 name 屬性, 藉以判斷其階次
+    '''
+    最前段的 name 屬性
+    link0folder.0
+    link1folder
+    link2folder
+    link3folder
+    link4folder
+    link5folder
+    link6folder.1
+    link7folder.1
+    link8folder.1.1
+    '''
+    levelStr = id.split("folder")[1]
+    length = len(levelStr)
+    if length == 2:
         return 1
-    elif length == 10:
+    elif length == 4:
         return 2
+    elif length == 0:
+        return 4
     else:
         return 3
         
 def makePage(pageList):
     body = getBody(pageList[2])
+    #print(body)
     if pageLevel(pageList[0]) == 1:
         content = "&lt;h1&gt;" + pageList[1] + "&lt;/h1&gt;" + body[1:-1]
     elif pageLevel(pageList[0]) == 2:
         content = "&lt;h2&gt;" + pageList[1] + "&lt;/h2&gt;" + body[1:-1]
-    else:
+    elif pageLevel(pageList[0]) == 3:
         content = "&lt;h3&gt;" + pageList[1] + "&lt;/h3&gt;" + body[1:-1]
+    else:
+        content = "&lt;h4&gt;" + pageList[1] + "&lt;/h4&gt;" + body[1:-1]
     return content
     
 count = 0
 page_info = []
+'''
 for i in zip(soup.find_all('div', id=True), soup.select('div a[href]')):
     count += 1
     # folder, page_title, page_location
     #print(i[0].get('id'), i[1].text, i[1]['href'])
     page_info.append([i[0].get('id'), i[1].text, i[1]['href']])
+'''
+for i in soup.select('div a[href]'):
+    count += 1
+    #print(i['name'])
+    # need to remove "/" in i.text
+    second = i.text.replace("/", "")
+    page_info.append([i['name'], i.text, i['href']])
+    #print(i['name'], i.text)
 #print("total html:" + str(count))
 #print(page_info)
-# 主要 html 只有 57 個
-#first = ['folder.1', 'CoppeliaSim User Manual', 'en/welcome.htm']
+# 修正 wb_tree.html 中的 div 位置後, html 總數為 177 個
+# 因為每一個 div 中有多個 htm 檔案, 因此不能以 div 界定而要以 div 中的 a 中的 name 界定頁面 level
+#first = ['link0folder.0', 'CoppeliaSim User Manual', 'en/welcome.htm']
 #print(readFile(first[2]))
 #print(getBody(first[2]))
 contentHtml = ""
@@ -285,6 +314,7 @@ for i in page_info:
     eachPage = makePage(i)
     contentHtml += eachPage
 print(contentHtml)
+
 
 
 

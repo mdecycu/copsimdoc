@@ -155,7 +155,10 @@ for i in zip(soup.find_all('div', id=True), soup.select('div a[href]')):
 for i in soup.select('div a[href]'):
     count += 1
     #print(i['name'])
-    page_info.append([i['name'], i.text, i['href']])
+    # need to remove "/" in i.text
+    second = i.text.replace("/", "")
+    page_info.append([i['name'], second, i['href']])
+    #print(i['name'], i.text)
 #print("total html:" + str(count))
 #print(page_info)
 # 修正 wb_tree.html 中的 div 位置後, html 總數為 177 個
