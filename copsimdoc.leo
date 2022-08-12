@@ -350,6 +350,16 @@ for i in title:
 <t tx="leo.20220811153642.1"></t>
 <t tx="leo.20220811234602.1">除掉 &lt;img src="wb_img/node.png"&gt;
 </t>
-<t tx="leo.20220812002135.1">檢查是有 page title 中的 space 必須移除才可與原手冊的頁面連結相對應</t>
+<t tx="leo.20220812002135.1">檢查是有 page title 中的 space 必須移除才可與原手冊的頁面連結相對應
+
+要設法區分頁面 title 與 file name, 照理說應該以 file name 作為頁面 title 才能與原手冊中的連結對應
+
+但是動態網頁中的 get_page 若以 title.htm 取標題為 title 的頁面, 則無法取得, 為了讓動態與靜態網頁能與原手冊中的連結對應, 看是否可以讓 get_page 可以取 title 不行後, 再取 title.htm?
+
+意即, get_page 函式針對頁面標題帶有 .htm 的字串時, 會自動去除 .htm 之後, 再取頁面內容!
+
+也就是配合 pjcopsim 的 cmsimde 若無法採用統一的頁面擷取模式, 就必須自行客製化.
+
+而且因為標題的字串頗長, 或許連下拉式功能表也必須額外配合修改</t>
 </tnodes>
 </leo_file>

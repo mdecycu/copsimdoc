@@ -4,7 +4,6 @@
 from bs4 import BeautifulSoup
 with open("wb_tree.html") as f:
     data = f.read()
-
 soup = BeautifulSoup(data, 'html.parser')
 
 def readFile(path):
@@ -12,6 +11,9 @@ def readFile(path):
     """
     with open(path, encoding="utf-8") as f:
         data = f.read()
+        # 嘗試在此將所有 .htm 連結改為 .html
+        data = data.replace(".htm", ".html")
+        
         # h1, h2 and h3 replaced with h4
         data = data.replace("<h1>", "<h4>")
         data = data.replace("</h1>", "</h4>")
@@ -21,6 +23,8 @@ def readFile(path):
         data = data.replace("</h3>", "</h4>")
         # 修改 <img src="images/ 為 <img src="/images/
         data = data.replace('<img src="images/', '<img src="/images/')
+    return data
+    
     return data
     
 def getBody(path):
@@ -82,7 +86,10 @@ for i in soup.select('div a[href]'):
     count += 1
     #print(i['name'])
     # need to remove "/" in i.text
-    second = i.text.replace("/", "")
+    #second = i.text.replace("/", "")
+    # 嘗試將 i['href'] 去掉 en/ 與 .htm 作為頁面標題, 看是否可以讓原先的連結直接生效
+    second = i['href'].replace("en/", "")
+    second = second.replace(".htm", "")
     page_info.append([i['name'], second, i['href']])
     #print(i['name'], i.text)
 #print("total html:" + str(count))
