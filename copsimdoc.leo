@@ -29,6 +29,7 @@
 </v>
 <v t="leo.20220811234602.1"><vh>wb_tree.html 處理</vh></v>
 <v t="leo.20220812002135.1"><vh>html 處理</vh></v>
+<v t="leo.20220812113435.1"><vh>regularAPI 與 images</vh></v>
 </vnodes>
 <tnodes>
 <t tx="leo.20220518161022.1"></t>
@@ -149,90 +150,16 @@ c.recursiveImport(
 from bs4 import BeautifulSoup
 with open("wb_tree.html") as f:
     data = f.read()
-
 soup = BeautifulSoup(data, 'html.parser')
-'''
-#finding the div with the id
-ids = [tag['id'] for tag in soup.select('div[id]')]
-  
-print(ids)
-'''
-'''
-['folder.1', 'folder.1.1', 'folder.2', 'folder.2.1', 'folder.3', 'folder.4', 'folder.4.1', 'folder.4.1.1', 'folder.4.1.2', 'folder.4.1.3', 'folder.4.1.4', 'folder.4.1.4.1', 'folder.4.1.4.1.1', 'folder.4.1.4.2', 'folder.4.1.5', 'folder.4.1.5.1', 'folder.4.1.5.1.1', 'folder.4.1.6', 'folder.4.1.7', 'folder.4.1.8', 'folder.4.1.8.1', 'folder.4.1.9', 'folder.4.1.10', 'folder.4.1.11', 'folder.4.1.12', 'folder.5', 'folder.5.1', 'folder.5.1.1', 'folder.5.1.2', 'folder.5.2', 'folder.5.2.1', 'folder.5.2.2', 'folder.5.3', 'folder.5.3.1', 'folder.5.4', 'folder.5.5', 'folder.5.5.1', 'folder.5.5.2', 'folder.5.5.2.1', 'folder.5.5.2.2', 'folder.5.6', 'folder.5.7', 'folder.5.8', 'folder.5.9', 'folder.5.9.1', 'folder.5.9.2', 'folder.5.10', 'folder.5.11', 'folder.6', 'folder.6.1', 'folder.6.1.1', 'folder.6.1.1.1', 'folder.6.1.2', 'folder.6.2', 'folder.7', 'folder.8', 'folder.8.1']
-'''
-'''
-for ID in soup.find_all('div', id=True):  
-    print(ID.get('id'))
-'''
-'''
-folder.1
-folder.1.1
-folder.2
-folder.2.1
-folder.3
-folder.4
-folder.4.1
-folder.4.1.1
-folder.4.1.2
-folder.4.1.3
-folder.4.1.4
-folder.4.1.4.1
-folder.4.1.4.1.1
-folder.4.1.4.2
-folder.4.1.5
-folder.4.1.5.1
-folder.4.1.5.1.1
-folder.4.1.6
-folder.4.1.7
-folder.4.1.8
-folder.4.1.8.1
-folder.4.1.9
-folder.4.1.10
-folder.4.1.11
-folder.4.1.12
-folder.5
-folder.5.1
-folder.5.1.1
-folder.5.1.2
-folder.5.2
-folder.5.2.1
-folder.5.2.2
-folder.5.3
-folder.5.3.1
-folder.5.4
-folder.5.5
-folder.5.5.1
-folder.5.5.2
-folder.5.5.2.1
-folder.5.5.2.2
-folder.5.6
-folder.5.7
-folder.5.8
-folder.5.9
-folder.5.9.1
-folder.5.9.2
-folder.5.10
-folder.5.11
-folder.6
-folder.6.1
-folder.6.1.1
-folder.6.1.1.1
-folder.6.1.2
-folder.6.2
-folder.7
-folder.8
-folder.8.1
-'''
-'''
-# get anchor under div, and print text
-for a in soup.select('div a[href]'):
-    print (a.text)
-'''
+
 def readFile(path):
     """Read file content by given path
     """
     with open(path, encoding="utf-8") as f:
         data = f.read()
+        # 嘗試在此將所有 .htm 連結改為 .html
+        data = data.replace(".htm", ".html")
+        
         # h1, h2 and h3 replaced with h4
         data = data.replace("&lt;h1&gt;", "&lt;h4&gt;")
         data = data.replace("&lt;/h1&gt;", "&lt;/h4&gt;")
@@ -240,6 +167,10 @@ def readFile(path):
         data = data.replace("&lt;/h2&gt;", "&lt;/h4&gt;")
         data = data.replace("&lt;h3&gt;", "&lt;h4&gt;")
         data = data.replace("&lt;/h3&gt;", "&lt;/h4&gt;")
+        # 修改 &lt;img src="images/ 為 &lt;img src="/images/
+        data = data.replace('&lt;img src="images/', '&lt;img src="/images/')
+    return data
+    
     return data
     
 def getBody(path):
@@ -301,8 +232,11 @@ for i in soup.select('div a[href]'):
     count += 1
     #print(i['name'])
     # need to remove "/" in i.text
-    second = i.text.replace("/", "")
-    page_info.append([i['name'], i.text, i['href']])
+    #second = i.text.replace("/", "")
+    # 嘗試將 i['href'] 去掉 en/ 與 .htm 作為頁面標題, 看是否可以讓原先的連結直接生效
+    second = i['href'].replace("en/", "")
+    second = second.replace(".htm", "")
+    page_info.append([i['name'], second, i['href']])
     #print(i['name'], i.text)
 #print("total html:" + str(count))
 #print(page_info)
@@ -361,5 +295,23 @@ for i in title:
 也就是配合 pjcopsim 的 cmsimde 若無法採用統一的頁面擷取模式, 就必須自行客製化.
 
 而且因為標題的字串頗長, 或許連下拉式功能表也必須額外配合修改</t>
+<t tx="leo.20220812113435.1">需要將原始文件 en 目錄中的 reaularAPI 目錄中的檔案, 將 .htm 改為 .html 後, 放到 content 目錄中, 並配合加入 images/homeImg.png
+
+修改檔案名稱程式: 將 .htm 改為 .html
+
+# Python program to rename all file
+# names in your directory
+import os
+ 
+os.chdir('regularAPI')
+print(os.getcwd())
+ 
+for count, f in enumerate(os.listdir()):
+    f_name, f_ext = os.path.splitext(f)
+    f_ext = ".html"
+ 
+    new_name = f'{f_name}{f_ext}'
+    os.rename(f, new_name)
+print("done")</t>
 </tnodes>
 </leo_file>
